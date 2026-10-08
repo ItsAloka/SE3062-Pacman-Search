@@ -1,0 +1,40 @@
+HOW TO LAUNCH THE PAC-MAN SEARCH DEMO
+=====================================
+
+Run these from the project root folder (CampusIaAssignment).
+
+1) Open the launcher UI (pick a question, Watch Pac-Man, run the autograder)
+
+   Without activating the venv:
+       cd search && .venv/Scripts/python launcher.py
+
+   With the venv already activated (prompt shows "(.venv)"):
+       cd search && python launcher.py
+
+   To activate the venv in Git Bash:
+       source search/.venv/Scripts/activate
+
+
+2) Run a single demo directly (from inside the search folder)
+
+   Q1 DFS:          python pacman.py -l mediumMaze -p SearchAgent -a fn=dfs
+   Q2 BFS:          python pacman.py -l mediumMaze -p SearchAgent -a fn=bfs
+   Q3 UCS:          python pacman.py -l mediumDottedMaze -p StayEastSearchAgent
+   Q4 A*:           python pacman.py -l bigMaze -z .5 -p SearchAgent -a fn=astar,heuristic=manhattanHeuristic
+   Q5 Corners:      python pacman.py -l mediumCorners -p SearchAgent -a fn=bfs,prob=CornersProblem
+   Q6 Corners A*:   python pacman.py -l mediumCorners -p AStarCornersAgent -z 0.5
+   Q7 Food A*:      python pacman.py -l trickySearch -p AStarFoodSearchAgent
+   Play yourself:   python pacman.py
+
+
+3) Autograder (from inside the search folder)
+
+   One question:    python autograder.py -q q1
+   All questions:   python autograder.py --no-graphics
+
+
+First-time setup (only if search/.venv does not exist yet)
+   cd search
+   python -m venv .venv
+   source .venv/Scripts/activate
+   pip install numpy matplotlib
