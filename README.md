@@ -22,12 +22,14 @@ python autograder.py --no-graphics
 
 ## Work split
 
-| Question | File | Owner |
-|---|---|---|
-| Q1 DFS, Q2 BFS | search.py | TBD |
-| Q3 UCS, Q4 A* | search.py | TBD |
-| Q5 CornersProblem, Q6 cornersHeuristic | searchAgents.py | TBD |
-| Q7 foodHeuristic | searchAgents.py | TBD |
+See [PLAN.md](PLAN.md) for the full plan, timeline and Git workflow.
+
+| Ref | Member | Questions | File |
+|---|---|---|---|
+| M1 | Warnakulasinhage S.N.A (lead) | Q1 DFS, Q2 BFS | search.py |
+| M2 | Nawodya K.P.G.P | Q3 UCS, Q4 A*, Q5 CornersProblem | search.py, searchAgents.py |
+| M3 | Fonseka W.P.L | Q6 cornersHeuristic | searchAgents.py |
+| M4 | Seelarathna G.P.B | Q7 foodHeuristic | searchAgents.py |
 
 ## Rules
 - Do NOT rename files, functions or classes (autograder imports by name).
