@@ -134,7 +134,27 @@ def breadthFirstSearch(problem: SearchProblem):
 def uniformCostSearch(problem: SearchProblem):
     """Search the node of least total cost first."""
     "*** YOUR CODE HERE ***"
-    util.raiseNotDefined()
+    # Same graph-search loop, but the fringe is a priority queue ordered by
+    # g(n) = total path cost from the start, so the cheapest node is expanded first.
+    fringe = util.PriorityQueue()
+    fringe.push((problem.getStartState(), [], 0), 0)
+    expanded = set()
+
+    while not fringe.isEmpty():
+        state, actions, cost = fringe.pop()
+
+        # Goal test on pop: the first time a goal is popped it has the lowest cost
+        if problem.isGoalState(state):
+            return actions
+
+        if state not in expanded:
+            expanded.add(state)
+            for successor, action, stepCost in problem.getSuccessors(state):
+                if successor not in expanded:
+                    newCost = cost + stepCost
+                    fringe.push((successor, actions + [action], newCost), newCost)
+
+    return []
 
 def nullHeuristic(state, problem=None):
     """
@@ -146,7 +166,28 @@ def nullHeuristic(state, problem=None):
 def aStarSearch(problem: SearchProblem, heuristic=nullHeuristic):
     """Search the node that has the lowest combined cost and heuristic first."""
     "*** YOUR CODE HERE ***"
-    util.raiseNotDefined()
+    # Identical to UCS except the priority is f(n) = g(n) + h(n):
+    # cost so far plus the heuristic estimate of the cost still to go.
+    start = problem.getStartState()
+    fringe = util.PriorityQueue()
+    fringe.push((start, [], 0), heuristic(start, problem))
+    expanded = set()
+
+    while not fringe.isEmpty():
+        state, actions, cost = fringe.pop()
+
+        if problem.isGoalState(state):
+            return actions
+
+        if state not in expanded:
+            expanded.add(state)
+            for successor, action, stepCost in problem.getSuccessors(state):
+                if successor not in expanded:
+                    newCost = cost + stepCost
+                    priority = newCost + heuristic(successor, problem)
+                    fringe.push((successor, actions + [action], newCost), priority)
+
+    return []
 
 
 # Abbreviations
