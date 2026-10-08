@@ -1,0 +1,11 @@
+# Python
+__pycache__/
+*.pyc
+.venv/
+venv/
+
+# Local only
+search.zip
+Docs/
+*.pdf
+Group_*_Code.zip
