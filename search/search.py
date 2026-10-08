@@ -87,12 +87,49 @@ def depthFirstSearch(problem: SearchProblem):
     print("Start's successors:", problem.getSuccessors(problem.getStartState()))
     """
     "*** YOUR CODE HERE ***"
-    util.raiseNotDefined()
+    # Fringe is LIFO, so the most recently discovered (deepest) node is expanded first.
+    # Each fringe entry is (state, actions) where actions is the path from the start.
+    fringe = util.Stack()
+    fringe.push((problem.getStartState(), []))
+    expanded = set()  # graph search: never expand the same state twice
+
+    while not fringe.isEmpty():
+        state, actions = fringe.pop()
+
+        # Goal test on pop (expansion), not on push
+        if problem.isGoalState(state):
+            return actions
+
+        if state not in expanded:
+            expanded.add(state)
+            for successor, action, stepCost in problem.getSuccessors(state):
+                if successor not in expanded:
+                    fringe.push((successor, actions + [action]))
+
+    return []  # fringe exhausted: no solution
 
 def breadthFirstSearch(problem: SearchProblem):
     """Search the shallowest nodes in the search tree first."""
     "*** YOUR CODE HERE ***"
-    util.raiseNotDefined()
+    # Same graph-search loop as DFS; only the fringe changes.
+    # Fringe is FIFO, so nodes are expanded in order of depth (shallowest first).
+    fringe = util.Queue()
+    fringe.push((problem.getStartState(), []))
+    expanded = set()
+
+    while not fringe.isEmpty():
+        state, actions = fringe.pop()
+
+        if problem.isGoalState(state):
+            return actions
+
+        if state not in expanded:
+            expanded.add(state)
+            for successor, action, stepCost in problem.getSuccessors(state):
+                if successor not in expanded:
+                    fringe.push((successor, actions + [action]))
+
+    return []
 
 def uniformCostSearch(problem: SearchProblem):
     """Search the node of least total cost first."""
