@@ -441,6 +441,7 @@ class AStarFoodSearchAgent(SearchAgent):
         self.searchFunction = lambda prob: search.aStarSearch(prob, foodHeuristic)
         self.searchType = FoodSearchProblem
 
+
 def foodHeuristic(state: Tuple[Tuple, List[List]], problem: FoodSearchProblem):
     """
     Your heuristic for the FoodSearchProblem goes here.
@@ -470,8 +471,38 @@ def foodHeuristic(state: Tuple[Tuple, List[List]], problem: FoodSearchProblem):
     problem.heuristicInfo['wallCount']
     """
     position, foodGrid = state
-    "*** YOUR CODE HERE ***"
-    return 0
+    "*** relevant q7 code here ***"
+    # Heuristic = true maze distance from Pacman to the FARTHEST remaining food dot.
+    #   Admissible: Pacman must eventually reach that dot, and the shortest walk to it
+    #   is exactly its maze distance, so the real cost can never be smaller.
+    #   Consistent: one move changes the maze distance to any dot by at most 1 (the
+    #   step cost), and eating a dot only removes candidates from the max.
+    foodList = foodGrid.asList()
+    if not foodList:
+        return 0
+
+    # Cache: BFS distance maps from each food dot, computed once per dot and reused
+    # across every call (walls never change), stored in problem.heuristicInfo.
+    distances = problem.heuristicInfo.setdefault('distances', {})
+    farthest = 0
+    for food in foodList:
+        if food not in distances:
+            distances[food] = _bfsDistancesFrom(food, problem.walls)
+        farthest = max(farthest, distances[food].get(position, 0))
+    return farthest
+
+def _bfsDistancesFrom(source, walls):
+    dist = {source: 0}
+    queue = util.Queue()
+    queue.push(source)
+    while not queue.isEmpty():
+        x, y = queue.pop()
+        for dx, dy in [(0, 1), (0, -1), (1, 0), (-1, 0)]:
+            nxt = (x + dx, y + dy)
+            if not walls[nxt[0]][nxt[1]] and nxt not in dist:
+                dist[nxt] = dist[(x, y)] + 1
+                queue.push(nxt)
+    return dist
 
 class ClosestDotSearchAgent(SearchAgent):
     "Search for all food using a sequence of searches"
